@@ -51,13 +51,20 @@ class QrCodeReader extends React.Component {
         );
     }
 
+    handleChangeInput = (event) => { // this handler can be handled outside
+        this.setState({
+            result: event.target.value
+        });
+        console.log(event.target.value)
+    }
+
     render() {
         const { isScan } = this.state;
         let cameraReader = isScan ?  this.returnScanner()  : null;
         let buttonrender = isScan ? <button onClick={this.handleStopScan}>Stop Scan</button> : <button onClick={this.handleBeginScan}>Scan</button>;
         return (
             <React.Fragment>
-                <input type='text' value={this.state.result}></input>
+                <input type='text' value={this.state.result} onChange={this.handleChangeInput}></input>
                 {buttonrender}
                 <div>{cameraReader}</div>
             </React.Fragment>
