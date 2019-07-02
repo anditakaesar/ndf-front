@@ -3,11 +3,12 @@ import QrReader from 'react-qr-reader'
 import './QrCodeReader.css';
 
 class QrCodeReader extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             result: 'No result',
             isFound: false,
+            isScan: false
         }
     }
 
@@ -17,18 +18,7 @@ class QrCodeReader extends React.Component {
                 result: data,
                 isFound: true
             });
-        }
-    }
-
-    returnStyle() {
-        if (this.state.isFound) {
-            return {
-                'display': 'none'
-            }
-        } else {
-            return {
-                'display': 'inline'
-            }
+            this.handleStopScan();
         }
     }
 
@@ -38,22 +28,38 @@ class QrCodeReader extends React.Component {
 
     handleBeginScan = () => {
         this.setState({
-            isFound: false
+            isFound: false,
+            isScan: true
         });
     }
 
+    handleStopScan = () => {
+        this.setState({
+            isScan: false
+        });
+    }
+
+    returnScanner() {
+        const { handleError, handleScan } = this;
+        return (
+            <div className="reader-container">
+                <QrReader
+                    delay={500} 
+                    onError={handleError} 
+                    onScan={handleScan} />
+            </div>
+        );
+    }
+
     render() {
+        const { isScan } = this.state;
+        let cameraReader = isScan ?  this.returnScanner()  : null;
+        let buttonrender = isScan ? <button onClick={this.handleStopScan}>Stop Scan</button> : <button onClick={this.handleBeginScan}>Scan</button>;
         return (
             <React.Fragment>
-                <div className="reader-container">
-                    <QrReader 
-                        ref="test"
-                        delay={500} 
-                        onError={this.handleError} 
-                        onScan={this.handleScan} />
-                </div>
-                <p>{this.state.result}</p>
-                <button onClick={this.handleBeginScan}>Begin Scan</button>
+                <input type='text' value={this.state.result}></input>
+                {buttonrender}
+                <div>{cameraReader}</div>
             </React.Fragment>
         );
     }
