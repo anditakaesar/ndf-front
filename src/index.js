@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
-import { store, persistor } from './redux/reduxStore';
+// import { store, persistor } from './redux/reduxStore';
+import { store, persistor } from './store';
 import { PersistGate } from 'redux-persist/integration/react'
 
 const rootElement = document.getElementById('root');

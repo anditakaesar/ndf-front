@@ -8,5 +8,6 @@ export const initialState = {
     },
     error: {
         message: ''
-    }
+    },
+    notifications: []
 }
